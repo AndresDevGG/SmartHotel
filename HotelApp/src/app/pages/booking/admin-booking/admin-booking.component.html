@@ -1,0 +1,146 @@
+
+<mat-vertical-stepper linear #stepper animationDuration="1500">
+
+  <mat-step [stepControl]="bookingFormGroup" [editable]="true" #stepper>
+    <form [formGroup]="bookingFormGroup">
+      <ng-template matStepLabel>Seleccione una habitación:</ng-template>
+      <!-- <input formControlName="room"> -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Costo</th>
+            <th scope="col">Impuesto</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="guests">
+          <ng-container *ngFor="let room of hotel?.rooms; let i=index">
+            <tr>
+              <td scope="col">{{i + 1}}</td>
+              <td scope="col">{{room.name}}</td>
+              <td scope="col">{{room.cost | currency}}</td>
+              <td scope="col">{{room.tax}}</td>
+              <td scope="col">{{ room?.total | currency }}</td>
+              <td>
+                <button mat-raised-button color="primary" (click)="chooseRoom(i, stepper)">Seleccionar</button>
+              </td>
+            </tr>
+          </ng-container>
+
+        </tbody>
+      </table>
+      <div>
+        <button mat-button color="primary" matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="guestsFormGroup" [editable]="true">
+    <form [formGroup]="guestsFormGroup">
+      <ng-template matStepLabel>Información de huespedes</ng-template>
+      <button mat-raised-button color="primary" (click)="addGuest()">Nuevo +</button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Fecha de nacimiento</th>
+            <th scope="col">Genero</th>
+            <th scope="col">Tipo Documento</th>
+            <th scope="col">Documento</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Teléfono</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="guests">
+          <ng-container *ngFor="let room of guests?.controls; let i=index">
+            <tr [formGroupName]="i">
+              <th scope="row">{{i + 1}}</th>
+              <td>
+                <input type="text" placeholder="Nombre completo" class="form-control input-table" formControlName="fullName">
+                <div *ngIf="guestForm(i).controls['fullName'].errors" class="text-danger">
+                  <span *ngIf="guestForm(i).controls['fullName'].errors['required']">Campo requerido</span>
+                </div>
+              </td>
+              <td>
+                <input type="date" placeholder="Fecha de nacimiento" class="form-control input-table" formControlName="birthdate">
+                <div *ngIf="guestForm(i).controls['birthdate'].errors" class="text-danger">
+                  <span *ngIf="guestForm(i).controls['birthdate'].errors['required']">Campo requerido</span>
+                </div>
+              </td>
+              <td>
+                <select class="form-select  input-table" formControlName="gender" aria-label="Default select example">
+                  <option value="" >Seleccione</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                  <option value="O">Prefiero no decirlo</option>
+                </select>
+                <div *ngIf="guestForm(i).controls['gender'].errors" class="text-danger">
+                  <span *ngIf="guestForm(i).controls['gender'].errors['required']">Campo requerido</span>
+                </div>
+              </td>
+              <td>
+                <select class="form-select  input-table" formControlName="typeDocument" aria-label="Default select example">
+                  <option value="" >Seleccione</option>
+                  <option value="CC">Cédula de ciudadania</option>
+                  <option value="TI">Tarjeta de identidad</option>
+                  <option value="CE">Cédula de extranjería</option>
+                  <option value="PA">Pasaporte</option>
+                </select>
+                <div *ngIf="guestForm(i).controls['typeDocument'].errors" class="text-danger">
+                  <span *ngIf="guestForm(i).controls['typeDocument'].errors['required']">Campo requerido</span>
+                </div>
+              </td>
+              <td>
+                <input type="text" class="form-control input-table" formControlName="document">
+                <div *ngIf="guestForm(i).controls['document'].errors" class="text-danger">
+                  <span *ngIf="guestForm(i).controls['document'].errors['required']">Campo requerido</span>
+                  <span *ngIf="guestForm(i).controls['document'].errors['pattern']">
+                    Solo números <br>
+                    {{guestForm(i).controls['document'].errors['pattern'] | json}}
+                  </span>
+                </div>
+              </td>
+              <td>
+                <input type="text" class="form-control input-table" formControlName="email">
+                <div *ngIf="guestForm(i).controls['email'].errors" class="text-danger">
+                  <span *ngIf="guestForm(i).controls['email'].errors['required']">Campo requerido</span>
+                  <span *ngIf="guestForm(i).controls['email'].errors['email']">Solo formato de correo </span>
+                </div>
+              </td>
+              <td>
+                <input type="text" class="form-control input-table" formControlName="phone">
+                <div *ngIf="guestForm(i).controls['phone'].errors" class="text-danger">
+                  <span *ngIf="guestForm(i).controls['phone'].errors['required']">Campo requerido</span>
+                </div>
+              </td>
+              <td>
+                <button mat-icon-button color="warn" (click)="removeGuest(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+
+
+        </tbody>
+      </table>
+
+      <div>
+        <button mat-button matStepperPrevious>Atrás</button>
+        <button mat-button color="primary" matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Resumen</ng-template>
+
+    <div>
+      <button mat-button matStepperPrevious>Atrás</button>
+      <button mat-raised-button color="primary" (click)="save()">Guardar</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>

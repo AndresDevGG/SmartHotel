@@ -1,0 +1,19 @@
+p {
+  font-size: initial;
+}
+.badge {
+  background-color: #3f51b5;
+  color: aliceblue;
+  margin-right: 3px;
+}
+
+.img-hotel {
+  width: 100%;
+	object-fit: contain;
+	object-position: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}

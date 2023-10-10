@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-12 content-filter" [formGroup]="formFilter">
+    <mat-form-field>
+      <mat-label>Rango de fechas</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date">
+        <input matEndDate formControlName="end" placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Número de personas</mat-label>
+      <input matInput min="1" max="10" type="number" formControlName="qunatityPeople">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ciudad</mat-label>
+      <mat-select formControlName="city">
+        <mat-option value="one">First option</mat-option>
+        <mat-option value="two">Second option</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="btn-search" (click)="search()"> Buscar <mat-icon>search</mat-icon></button>
+  </div>
+</div>

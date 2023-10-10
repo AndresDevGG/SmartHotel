@@ -1,0 +1,26 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button [matMenuTriggerFor]="menu" >
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="navigate('/hotel/admin')" >
+      <mat-icon>add</mat-icon>
+      <span>Nuevo</span>
+    </button>
+    <button mat-menu-item  (click)="navigate('/hotel')" >
+      <mat-icon>hotel</mat-icon>
+      <span>Hoteles</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>hotel_class</mat-icon>
+      <span>Reservas</span>
+    </button>
+  </mat-menu>
+
+  <span>Hotel App</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon favorite-icon">
+    <mat-icon>login</mat-icon>
+  </button>
+</mat-toolbar>

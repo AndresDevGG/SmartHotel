@@ -1,0 +1,30 @@
+<mat-card class="example-card">
+  <mat-card-content>
+    <div class="header">
+      <h1 class="fw-medium mb-0">{{ hotel?.name }}</h1>
+      <p class="fw-medium mb-0"><mat-icon color="primary" aria-hidden="false">location_on</mat-icon>{{hotel?.city}}</p>
+    </div>
+    <span class="text-muted">{{ hotel?.createdAt | date }}</span>
+    <div class="row m-0 p-0">
+    <div class="col-6 m-0 p-0">
+      <img mat-card-image [src]="hotel?.logo" class="img-hotel rounded-2" alt="Photo of hotel">
+    </div>
+    <div class="col-6 m-0">
+      <p class="my-1">
+        <span class="fw-medium">Habitaciones:</span>  <br>
+        <span *ngFor="let room of hotel?.rooms" class="badge rounded-pill p-2 fw-medium my-1">{{room?.name}}</span>
+      </p>
+      <p class="my-2">
+        <span class="fw-medium">Habitaciones desde:</span>  <br>
+        <span class="fw-medium badge rounded-pill p-2">{{minPrice | currency}}</span></p>
+    </div>
+  </div>
+  </mat-card-content>
+  <mat-card-actions *ngIf="isAdmin" class="justify-content-end">
+    <button mat-button color="warn">Inactivar</button>
+    <button mat-button color="primary">Ver</button>
+  </mat-card-actions>
+  <mat-card-actions *ngIf="isUser" class="justify-content-end">
+    <button mat-button color="primary" (click)="booking()">Reservar</button>
+  </mat-card-actions>
+</mat-card>

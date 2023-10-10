@@ -1,0 +1,6 @@
+<app-search-form></app-search-form>
+<div class="row">
+  <div *ngFor="let item of hotels" class="col-12 col-sm-12 col-md-4">
+    <app-card-hotel [hotel]="item" ></app-card-hotel>
+  </div>
+</div>

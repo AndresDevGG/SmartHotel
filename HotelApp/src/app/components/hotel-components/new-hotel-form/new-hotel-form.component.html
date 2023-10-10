@@ -1,0 +1,120 @@
+
+<mat-vertical-stepper linear #stepper animationDuration="1500">
+
+  <mat-step [stepControl]="hotelFormGroup" [editable]="true">
+    <form [formGroup]="hotelFormGroup">
+      <ng-template matStepLabel>Información del hotel</ng-template>
+
+      <div class="row mt-3">
+        <div class="col-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Logo</mat-label>
+            <input matInput formControlName="logo">
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <button mat-button color="primary" matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="roomsFormGroup" [editable]="true">
+    <form [formGroup]="roomsFormGroup">
+      <ng-template matStepLabel>Información de habitaciones</ng-template>
+
+      <button mat-raised-button color="primary" (click)="addRoom()">Nuevo +</button>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Costo</th>
+            <th scope="col">Impuesto</th>
+            <th scope="col">N° Piso</th>
+            <th scope="col">N° Habitación</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="rooms">
+          <ng-container *ngFor="let room of rooms.controls; let i=index">
+            <tr [formGroupName]="i">
+              <th scope="row">{{i + 1}}</th>
+              <td>
+                <input type="text" placeholder="Nombre habitación" class="form-control input-table" formControlName="name">
+                <div *ngIf="roomForm(i).controls['name'].errors" class="text-danger">
+                  <span *ngIf="roomForm(i).controls['name'].errors['required']">Campo requerido</span>
+                </div>
+              </td>
+              <td>
+                <select class="form-select  input-table" formControlName="typeRoom" aria-label="Default select example">
+                  <option value="" >Seleccione</option>
+                  <option *ngFor="let item of typeRooms" [value]="item.id" >{{item.name}}</option>
+                </select>
+                <div *ngIf="roomForm(i).controls['typeRoom'].errors" class="text-danger">
+                  <span *ngIf="roomForm(i).controls['typeRoom'].errors['required']">Campo requerido</span>
+                </div>
+              </td>
+              <td>
+                <input type="text" class="form-control input-table" formControlName="cost">
+              </td>
+              <td>
+                <input type="text" class="form-control input-table" formControlName="tax">
+              </td>
+              <td>
+                <input type="number" class="form-control input-table" min="1" formControlName="floor">
+                <div *ngIf="roomForm(i).controls['floor'].errors" class="text-danger">
+                  <span *ngIf="roomForm(i).controls['floor'].errors['required']">Campo requerido</span>
+                  <span *ngIf="roomForm(i).controls['floor'].errors['min']">Valor minimo 1</span>
+                </div>
+              </td>
+              <td>
+                <input type="number" class="form-control input-table" min="100" formControlName="numRoom">
+                <div *ngIf="roomForm(i).controls['numRoom'].errors" class="text-danger">
+                  <span *ngIf="roomForm(i).controls['numRoom'].errors['required']">Campo requerido</span>
+                  <span *ngIf="roomForm(i).controls['numRoom'].errors['min']">Valor minimo 100</span>
+                </div>
+              </td>
+              <td>
+                <button mat-icon-button color="warn" (click)="removeRoom(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+
+
+        </tbody>
+      </table>
+
+      <div>
+        <button mat-button matStepperPrevious>Atrás</button>
+        <button mat-button color="primary" matStepperNext [disabled]="rooms.length === 0" >Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Resumen</ng-template>
+    <p>Este es un resumen del hotel a guardar, verifica que la información este bien:</p>
+    <h3>Nombre:</h3>
+    <p>{{objectToSave.name}}</p>
+    <h3>Logo:</h3>
+    <img [src]="objectToSave.logo" class="img-hotel">
+    <h3>Habitaciones:</h3>
+    <ul>
+      <li *ngFor="let item of objectToSave.rooms">{{ item.name }} <span class="fw-bold">{{item.cost | currency}}</span> </li>
+    </ul>
+    <div>
+      <button mat-button matStepperPrevious>Atrás</button>
+      <button mat-raised-button color="primary" (click)="save()">Guardar</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
